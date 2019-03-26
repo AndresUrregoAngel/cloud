@@ -16,23 +16,24 @@ def encoding_message(message):
     else:
         return  mencoded
         
-def send_messages(client,recordtime):
+def send_messages(client,recordtime,streamname):
     try:
         n = 1  
         while n > 0:
             
-            message = "this is the message at {}".format(recordtime)
+            message = "this is the message number {:02d} at {}".format(n,recordtime)
             payload = encoding_message(message)
             response = client.put_record(
-                StreamName='KinesisDS',
+                StreamName=streamname,
                 Data=payload,
-                PartitionKey='okstreaming{}'.format(n)
+                PartitionKey='pkstreaming{}'.format(n)
                 #ExplicitHashKey='string',
                 #SequenceNumberForOrdering='string'
             )
             
-            print('the message has been posted and the response code from the streamins is: {}'.
-            format(response['ResponseMetadata']['HTTPStatusCode']))
+           
+            print('the message has been posted and the response code from the streaming is: {} with sequence number {}'.
+            format(response['ResponseMetadata']['HTTPStatusCode'],response['SequenceNumber']))
             n+=1
             
             if n== 10:
@@ -43,4 +44,5 @@ def send_messages(client,recordtime):
 
 if __name__ == '__main__':
     
-    send_messages(client,recordtime)
+    streamname = ''
+    send_messages(client,recordtime,streamname)
