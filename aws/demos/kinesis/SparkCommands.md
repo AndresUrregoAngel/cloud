@@ -21,3 +21,6 @@ source: https://datawookie.netlify.com/blog/2017/07/installing-spark-on-ubuntu/
 
 	mvn archetype:generate -DgroupId=com.streaming.sparkdemo -DartifactId=spark-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 
+- Register a consumer
+
+	aws kinesis register-stream-consumer --stream-arn arn:aws:kinesis:us-east-1:account:stream/KinesisDS --consumer-name consumer1
