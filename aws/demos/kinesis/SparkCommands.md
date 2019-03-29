@@ -17,10 +17,14 @@ source: https://datawookie.netlify.com/blog/2017/07/installing-spark-on-ubuntu/
 	$SPARK_HOME/sbin/stop-master.sh
 
 
-- Initiate SPark project
+- Initiate Spark project
 
 	mvn archetype:generate -DgroupId=com.streaming.sparkdemo -DartifactId=spark-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 
 - Register a consumer
 
 	aws kinesis register-stream-consumer --stream-arn arn:aws:kinesis:us-east-1:account:stream/KinesisDS --consumer-name consumer1
+	
+- Kinesis Data Generator
+
+	https://awslabs.github.io/amazon-kinesis-data-generator/web/producer.html

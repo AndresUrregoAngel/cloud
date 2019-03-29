@@ -22,7 +22,7 @@ def get_shard(client,streamname):
         shardid = response['Shards'][0]['ShardId']
         print('the shardid for this shard is: {}'.format(response['Shards'][0]['ShardId']))
     
-    except Except as error:
+    except Exception as error:
         print(error)
     else:
         return shardid
