@@ -6,8 +6,6 @@ ts = datetime.now()
 recordtime = '{}{:02d}{:02d}{}{}{}'.format(ts.year,ts.month,ts.day,ts.hour,ts.minute,ts.second)
 
 
-client = boto3.client('kinesis')
-
 def get_shard(client,streamname):
     try:
     
@@ -57,7 +55,7 @@ def read_kinesis_streams(client,sharditerator):
             )
         
         for item in response['Records']:
-            payload = base64.decodestring(item['Data'])
+            payload = item['Data']#base64.b64decode(item['Data'])
             print(payload)
         
     except Exception as error:
@@ -66,8 +64,9 @@ def read_kinesis_streams(client,sharditerator):
         
 if __name__ == '__main__':
     
+    client = boto3.client('kinesis')
     streamname = ''
-    sequencenumber = '49594181992117678557922090488457557123684639347849560066'
+    sequencenumber = '49594272844283181602151299239528101835610409328212705282'
     shardid = get_shard(client,streamname)
     sharditerator = get_sharditerator(client,streamname,shardid,sequencenumber)
     read_kinesis_streams(client,sharditerator)

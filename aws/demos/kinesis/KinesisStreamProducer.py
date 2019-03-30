@@ -10,7 +10,7 @@ client = boto3.client('kinesis')
 
 def encoding_message(message):
     try:
-        mencoded = base64.encodestring(message)
+        mencoded = base64.b64encode(message)#base64.encodestring(message)
     except Exception as error:
         print(error)
     else:
@@ -25,24 +25,23 @@ def send_messages(client,recordtime,streamname):
             payload = encoding_message(message)
             response = client.put_record(
                 StreamName=streamname,
-                Data=payload,
+                Data=message,
                 PartitionKey='pkstreaming{}'.format(n)
                 #ExplicitHashKey='string',
                 #SequenceNumberForOrdering='string'
             )
             
-           
             print('the message has been posted and the response code from the streaming is: {} with sequence number {}'.
             format(response['ResponseMetadata']['HTTPStatusCode'],response['SequenceNumber']))
             n+=1
             
-            if n== 10:
-                break
+            # if n== 10:
+            #     break
             
     except Exception as error:
         print(error)
 
 if __name__ == '__main__':
     
-    streamname = ''
+    streamname = 'KinesisDS'
     send_messages(client,recordtime,streamname)

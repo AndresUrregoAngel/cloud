@@ -28,3 +28,5 @@ source: https://datawookie.netlify.com/blog/2017/07/installing-spark-on-ubuntu/
 - Kinesis Data Generator
 
 	https://awslabs.github.io/amazon-kinesis-data-generator/web/producer.html
+	
+	Template: {{name.firstName}},{{name.lastName}},{{random.number(70)}},{{internet.ip}}
