@@ -35,6 +35,6 @@ source: https://datawookie.netlify.com/blog/2017/07/installing-spark-on-ubuntu/
 
 	https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-web-interfaces.html
 
--- Submit example KCL job
+- Submit example KCL job
 
 	bin/run-example --packages org.apache.spark:spark-streaming-kinesis-asl_2.11:2.3.0 streaming.JavaKinesisWordCountASL myapp  KinesisDS https://kinesis.us-east-1.amazonaws.com 
