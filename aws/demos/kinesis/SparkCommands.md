@@ -30,3 +30,11 @@ source: https://datawookie.netlify.com/blog/2017/07/installing-spark-on-ubuntu/
 	https://awslabs.github.io/amazon-kinesis-data-generator/web/producer.html
 	
 	Template: {{name.firstName}},{{name.lastName}},{{random.number(70)}},{{internet.ip}}
+
+- EMR web interfaces
+
+	https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-web-interfaces.html
+
+-- Submit example KCL job
+
+	bin/run-example --packages org.apache.spark:spark-streaming-kinesis-asl_2.11:2.3.0 streaming.JavaKinesisWordCountASL myapp  KinesisDS https://kinesis.us-east-1.amazonaws.com 
