@@ -26,4 +26,48 @@
 2. Configure website authentication on Cognito
 
     - Create a manage pool list
-    - Set the list on the file `config.js` to allow the web page hook the users pool list
+        - Add the website application to the user pool under the name `WildRydesWebApp`
+        - Uncheck the Generate client secret option. Client secrets aren't currently supported for use with browser-based applications.
+    - Set the list on the file `config.js` to allow the web page hook the users pool list adding `userPoolId` and `userPoolClientId`
+
+3. Create serverless backend
+
+    - Create DynamoDB table
+        - Name: Rides
+        - PK: RideId
+    - Create lambda function with the name `RequestUnicorn`
+        - Test the lambda function
+        ```
+        {
+            "path": "/ride",
+            "httpMethod": "POST",
+            "headers": {
+                "Accept": "*/*",
+                "Authorization": "eyJraWQiOiJLTzRVMWZs",
+                "content-type": "application/json; charset=UTF-8"
+            },
+            "queryStringParameters": null,
+            "pathParameters": null,
+            "requestContext": {
+                "authorizer": {
+                    "claims": {
+                        "cognito:username": "the_username"
+                    }
+                }
+            },
+            "body": "{\"PickupLocation\":{\"Latitude\":47.6174755835663,\"Longitude\":-122.28837066650185}}"
+        }
+      ```
+4. Deploy an API Gateway and hook it up along with the lambda function
+
+    - API Name: `WildRydes`
+    - Set the function as `edge optimized`
+    - Create a resource called `ride`
+    - Create a method POST and linked with the lambda function
+        - Edit method request card and add `WildRydes Cognito` for authorization 
+    
+5. Configure the pools authorizer for API GW
+
+    - Authorizer name: `WildRydes`
+    - Token source : `Authorization`
+      
