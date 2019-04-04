@@ -1,6 +1,10 @@
 ##### Spark quick configuration
 
-source: https://datawookie.netlify.com/blog/2017/07/installing-spark-on-ubuntu/
+sources:
+
+	- https://datawookie.netlify.com/blog/2017/07/installing-spark-on-ubuntu/
+	
+	- https://docs.aws.amazon.com/cloud9/latest/user-guide/sample-java.html#sample-java-sdk-creds
 
 
 - start master and slave
