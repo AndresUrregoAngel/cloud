@@ -33,8 +33,22 @@ sources:
 
 	https://awslabs.github.io/amazon-kinesis-data-generator/web/producer.html
 	
-	Template: {{name.firstName}},{{name.lastName}},{{random.number(70)}},{{internet.ip}}
+	Template 1 : {{name.firstName}},{{name.lastName}},{{random.number(70)}},{{internet.ip}}
 	log : kinesisdg / kinesisdg2019
+
+	Template 2 :
+
+				{
+		"name" : {{name.firstName}},
+		"lastname": {{name.lastName}},
+		"age" : {{random.number(70)}},
+		"yearsalary" : {{random.number({
+				    "min" : 35000,
+				    "max" : 200000
+					    })}}
+
+
+		}
 
 - EMR web interfaces
 
