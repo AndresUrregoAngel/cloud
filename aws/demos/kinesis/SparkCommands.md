@@ -33,7 +33,7 @@ sources:
 
 	https://awslabs.github.io/amazon-kinesis-data-generator/web/producer.html
 	
-	Template 1 : {{name.firstName}},{{name.lastName}},{{random.number(70)}},{{internet.ip}}
+	Template 1 : {{name.firstName}},{{name.lastName}},{{random.number(70)}},{{random.number({ "min" : 35000,"max" : 200000})}}
 	log : kinesisdg / kinesisdg2019
 
 	Template 2 :
