@@ -24,6 +24,8 @@ sources:
 - Initiate Spark project
 
 	mvn archetype:generate -DgroupId=com.streaming.sparkdemo -DartifactId=spark-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+	
+	java -cp consumer-1.0-SNAPSHOT-jar-with-pendencies.jar  fanoutconsumer
 
 - Register a consumer
 
