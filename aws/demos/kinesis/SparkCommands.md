@@ -25,7 +25,10 @@ sources:
 
 	mvn archetype:generate -DgroupId=com.streaming.sparkdemo -DartifactId=spark-demo -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
 	
-	java -cp consumer-1.0-SNAPSHOT-jar-with-pendencies.jar  fanoutconsumer
+	
+	- java -cp samples-1.0.0-jar-with-dependencies.jar com.consumer.app.AmazonKinesisApplicationSample
+	
+	- java -cp consumer-1.0-SNAPSHOT-jar-with-pendencies.jar  fanoutconsumer
 
 - Register a consumer
 
