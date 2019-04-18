@@ -62,6 +62,6 @@ sources:
 - Submit example KCL job
 
 
-	- cd /usr/lib/soark/
+	- cd /usr/lib/spark/
 
 	- bin/run-example --packages org.apache.spark:spark-streaming-kinesis-asl_2.11:2.3.0 streaming.JavaKinesisWordCountASL myapp  KinesisDS https://kinesis.us-east-1.amazonaws.com 
