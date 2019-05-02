@@ -1,0 +1,46 @@
+#### Execution
+
+ mvn compile exec:java -X \
+   -Dexec.mainClass=bnclabs.executor_consumer \
+   -Dexec.args="--project=slalom-technical-solutions \
+     --tempLocation=gs://gcplabs/tmp \
+     --gcpTempLocation=gs://gcplabs/gtmp \
+     --runner=DataflowRunner \
+     --jobName=etl-kafka-consumer \
+     --numWorkers=5 \
+     --maxNumWorkers=20 \
+     --diskSizeGb=100 \
+     --zone=northamerica-northeast1-a \
+     --workerMachineType=n1-standard-1 "
+
+
+
+### Streaming
+
+ mvn compile exec:java -X \
+   -Dexec.mainClass=bnclabs.executor_consumer \
+   -Dexec.args="--project=slalom-technical-solutions \
+     --tempLocation=gs://gcplabs/tmp \
+     --gcpTempLocation=gs://gcplabs/gtmp \
+     --runner=DataflowRunner \
+     --jobName=etl-kafka-consumer \
+     --streaming=true \
+     --numWorkers=5 \
+     --maxNumWorkers=20 \
+     --diskSizeGb=100 \
+     --zone=northamerica-northeast1-a \
+     --workerMachineType=n1-standard-1 "
+
+
+     --usePublicIps=false :
+Workflow failed. Causes: Subnetwork '' on project slalom-technical-solutions network 'default' in region northamerica-northeast1
+does not have Private Google Access, which is required for usage of private IP addresses by the Dataflow workers.
+Please refer to https://cloud.google.com/vpc/docs/configure-private-google-access#configuring_access_to_google_services_from_internal_ips for instructions on how to configure it.
+
+
+
+     mvn compile exec:java -X \
+        -Dexec.mainClass=bnclabs.executor_consumer \
+        -Dexec.args="--project=slalom-technical-solutions \
+          --runner=DirectRunner \
+          --jobName=etl-kafka-consumer "
