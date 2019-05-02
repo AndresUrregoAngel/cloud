@@ -1,10 +1,10 @@
 #### Execution
 
  mvn compile exec:java -X \
-   -Dexec.mainClass=bnclabs.executor_consumer \
-   -Dexec.args="--project=slalom-technical-solutions \
-     --tempLocation=gs://gcplabs/tmp \
-     --gcpTempLocation=gs://gcplabs/gtmp \
+   -Dexec.mainClass=package.executor_consumer \
+   -Dexec.args="--project=project \
+     --tempLocation=gs://bucket \
+     --gcpTempLocation=gs://bucket/gtmp \
      --runner=DataflowRunner \
      --jobName=etl-kafka-consumer \
      --numWorkers=5 \
@@ -18,10 +18,10 @@
 ### Streaming
 
  mvn compile exec:java -X \
-   -Dexec.mainClass=bnclabs.executor_consumer \
-   -Dexec.args="--project=slalom-technical-solutions \
-     --tempLocation=gs://gcplabs/tmp \
-     --gcpTempLocation=gs://gcplabs/gtmp \
+   -Dexec.mainClass=package.executor_consumer \
+   -Dexec.args="--project=project \
+     --tempLocation=gs://bucket/tmp \
+     --gcpTempLocation=gs://bucket/gtmp \
      --runner=DataflowRunner \
      --jobName=etl-kafka-consumer \
      --streaming=true \
@@ -40,7 +40,7 @@ Please refer to https://cloud.google.com/vpc/docs/configure-private-google-acces
 
 
      mvn compile exec:java -X \
-        -Dexec.mainClass=bnclabs.executor_consumer \
-        -Dexec.args="--project=slalom-technical-solutions \
+        -Dexec.mainClass=package.executor_consumer \
+        -Dexec.args="--project=project\
           --runner=DirectRunner \
           --jobName=etl-kafka-consumer "
