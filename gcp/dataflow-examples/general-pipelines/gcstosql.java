@@ -38,7 +38,7 @@ public class gcstosql {
         PipelineOptions options = PipelineOptionsFactory.fromArgs(args).create();
  //       PipelineOptions options = PipelineOptionsFactory.create(); /*locally*/
 //        options.setRunner(DirectRunner.class);
-//        options.setTempLocation("gs://gcplabs/tmp");
+//        options.setTempLocation("gs://bucket/tmp");
 
         Pipeline p = Pipeline.create(options);
 
@@ -70,7 +70,7 @@ public class gcstosql {
                 withDataSourceConfiguration(JdbcIO.DataSourceConfiguration.create(
                         "com.microsoft.sqlserver.jdbc.SQLServerDriver","jdbc:sqlserver://host;databaseName=mydb"
                 ).withUsername("user").withPassword("password"))
-                .withStatement("insert into bnc_citibike_trips values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ")
+                .withStatement("insert into tbl_citibike_trips values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ")
                 .withPreparedStatementSetter(new JdbcIO.PreparedStatementSetter<TableRow>() {
                     @Override
                     public void setParameters(TableRow element, PreparedStatement query) throws Exception {
