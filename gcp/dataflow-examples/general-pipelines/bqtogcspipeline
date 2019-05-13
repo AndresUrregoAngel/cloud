@@ -1,0 +1,62 @@
+package myproject;
+
+
+import com.google.api.services.bigquery.model.*;
+import org.apache.beam.sdk.*;
+import org.apache.beam.sdk.io.*;
+import org.apache.beam.sdk.io.gcp.bigquery.*;
+import org.apache.beam.sdk.io.kafka.*;
+import org.apache.beam.sdk.options.*;
+import org.apache.beam.runners.direct.DirectRunner;
+import org.apache.beam.sdk.transforms.*;
+import org.apache.beam.sdk.values.*;
+import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.serialization.*;
+import org.apache.kafka.common.utils.AppInfoParser;
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
+
+
+import pkgingestion.kafkaconsumer;
+
+import java.lang.reflect.*;
+import java.util.*;
+import java.util.stream.*;
+
+public class bqtogcspipeline {
+
+    public static void main( String [] args){
+
+//        PipelineOptions options = new PipelineOptionsFactory().fromArgs(args).create();
+        PipelineOptions options = PipelineOptionsFactory.create();
+        options.setRunner(DirectRunner.class);
+        options.setTempLocation("gs://bucket/tmp");
+        Pipeline p = Pipeline.create(options);
+
+
+
+        PCollection<TableRow> content = p.apply("reading BQ table",BigQueryIO.readTableRows().fromQuery(
+                "select tripduration,starttime,stoptime,start_station_id,start_station_name,start_station_latitude," +
+                        "start_station_longitude,end_station_id,end_station_name,end_station_latitude,end_station_longitude,bikeid,"+
+                        "usertype,IFNULL(CAST(birth_year as String),\"1900\")  as birth_year,gender"+
+                        " from [bigquery-public-data.new_york.citibike_trips] limit 100000"
+                ));
+
+        content.apply("write on GCS",ParDo.of(new DoFn<TableRow, String>(){
+            @ProcessElement
+            public void processElement(ProcessContext pc){
+                String record = pc.element().values()
+                        .stream().map(cell -> cell.toString().trim())
+                        .collect(Collectors.joining(","));
+                pc.output(record);
+            }
+        }))
+        .apply(TextIO.write().to("gs://bucket/bqoutput/citibike_trips.csv").withoutSharding());
+
+        p.run().waitUntilFinish();
+    }
+
+
+}
