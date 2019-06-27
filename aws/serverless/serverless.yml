@@ -1,4 +1,4 @@
-service: mylab
+service: mylabs
 
 provider:
   name: aws
@@ -8,11 +8,11 @@ provider:
   timeout: 10 # optional, in seconds, default is 6
   versionFunctions: false # optional, default is true
   tracing:
-    lambda: true # optional, enables tracing for all functions (can be true (true equals 'Active') 'Active' or 'PassThrough')
+    lambda: false # optional, enables tracing for all functions (can be true (true equals 'Active') 'Active' or 'PassThrough') #XRAY service on AWS
   environment:   # all the env variables are coming in here
     var1: 12
     var2: 32
-    
+
 
 
 functions:
@@ -21,8 +21,9 @@ functions:
         description: first function deploy by serverless
         runtime: python3.6 # this can be inherated from the provider definition
         handler: src/dm-function1.lambda_handler
-        Role: 'arn:aws:iam::xxxxxxxx:role/lambdabasicrole'
+        role: 'arn:aws:iam::account:role/lambdabasicrole'
         events:
             - schedule:
                 rate: cron(0 9 * * ? *)
                 name: ${self:functions.first-deployment.name}
+
