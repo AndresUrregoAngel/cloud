@@ -1,0 +1,12 @@
+service: booksapi
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: dev
+  environment:
+    env_number: 4
+
+functions:
+  hello-world:
+    handler: src/main.lambda_handler
