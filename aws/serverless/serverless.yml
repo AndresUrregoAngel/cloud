@@ -1,12 +1,28 @@
-service: booksapi
+service: mylab
 
 provider:
   name: aws
   runtime: python3.6
   stage: dev
-  environment:
-    env_number: 4
+  memorySize: 512 # optional, in MB, default is 1024
+  timeout: 10 # optional, in seconds, default is 6
+  versionFunctions: false # optional, default is true
+  tracing:
+    lambda: true # optional, enables tracing for all functions (can be true (true equals 'Active') 'Active' or 'PassThrough')
+  environment:   # all the env variables are coming in here
+    var1: 12
+    var2: 32
+    
+
 
 functions:
-  hello-world:
-    handler: src/main.lambda_handler
+    first-deployment:
+        name: dm-slalom-function
+        description: first function deploy by serverless
+        runtime: python3.6 # this can be inherated from the provider definition
+        handler: src/dm-function1.lambda_handler
+        Role: 'arn:aws:iam::xxxxxxxx:role/lambdabasicrole'
+        events:
+            - schedule:
+                rate: cron(0 9 * * ? *)
+                name: ${self:functions.first-deployment.name}
