@@ -1,0 +1,78 @@
+USE DATABASE DA_POC;
+
+DROP TABLE testUserst;
+
+CREATE TEMPORARY TABLE testUserstTEMP
+(
+  id VARCHAR(100),
+  date_account_created VARCHAR(100),
+  timestamp VARCHAR(100),
+  date_first VARCHAR(100),
+  gender VARCHAR(10),
+  age VARCHAR(20),
+  signup_method	VARCHAR(20),
+  signup_flow VARCHAR(20),
+  language VARCHAR(20),
+  affiliate_channel	VARCHAR(40),
+  affiliate_provider VARCHAR(40),
+  first_affiliate_tracked	VARCHAR(40),
+  signup_app	VARCHAR(40),
+  first_device_type	VARCHAR(40),
+  first_browser VARCHAR(40)
+)
+STAGE_FILE_FORMAT = students;
+
+copy into testUserstTEMP
+    from @personalaws/test_users.csv --file_format = students
+    on_error = 'skip_file';
+    
+select * from testUserst limit 10; 
+
+insert into testUserst
+select * from testUserstTEMP;
+
+truncate table testUsersT;
+
+-- Parquet loading example
+create or replace temporary table cities (
+  continent varchar default null,
+  country varchar default null,
+  city variant default null
+);
+
+select * from "DA_POC"."PUBLIC"."TESTUSERS" limit 10;
+
+-- Build file format parser for parquet
+CREATE FILE FORMAT "DA_POC"."PUBLIC".parquetParser TYPE = 'PARQUET' COMPRESSION = 'AUTO';
+
+-- Loading data from S3 location
+COPY INTO "DA_POC"."PUBLIC"."TESTUSERSPARQUET" FROM '@"DA_POC"."PUBLIC"."PERSONALAWS"/test_users.parquet' 
+FILE_FORMAT = '"DA_POC"."PUBLIC"."PARQUETPARSER"' ON_ERROR = 'ABORT_STATEMENT' PURGE = FALSE;
+
+-- copy snowql from local repo
+put file:////home/dev/Downloads/cities.parquet @sf_tut_stage;
+
+drop table citiesf;
+
+create table if not exists citiesf (
+  continent varchar default null,
+  country varchar default null,
+  city variant null
+);
+
+create temporary table citiestempo ( col variant);
+
+insert into citiesf
+select COL:continent,COL:country:name,COL:country:city:bag from citiestempo;
+
+
+select city[0]:array_element,city[1]:array_element,* from citiesf limit 2;
+
+insert into citiestempo
+SELECT * FROM
+@PERSONALAWS/cities.parquet
+(FILE_FORMAT => PARQUETPARSER);
+
+SELECT $1 FROM
+@PERSONALAWS/test_users.csv
+(FILE_FORMAT => STUDENTS);
