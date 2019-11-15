@@ -11,7 +11,7 @@ CC_CLOSED_DATE_SK from "STUDENTS"."PUBLIC"."CALL_CENTER" LIMIT 1;
 
 CREATE OR REPLACE FUNCTION adding_days(x DATE) 
     returns DATE
-    language sql
+    language sql -- this avoid run a subquery over call invokation
     as
     $$
     TO_DATE(X) + INTERVAL '1 YEAR,1DAY'
@@ -40,7 +40,7 @@ SELECT * FROM mystream
     WHERE METADATA$ACTION = 'INSERT';
     
 INSERT INTO "PUBLIC"."CALL_CENTER" 
-SELECT poc_sequence.nextval,
+SELECT poc_sequence.nextval, -- sequence
 CC_CALL_CENTER_ID,
 CC_REC_START_DATE,
 CC_REC_END_DATE,
