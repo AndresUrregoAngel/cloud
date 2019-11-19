@@ -41,3 +41,39 @@ create or replace pipe "DA_POC"."PUBLIC"."pipetransform"
 SHOW PIPES;
 
 select * from  "DA_POC"."PUBLIC"."citiepipetr";
+
+
+--unloading 
+
+copy into @personalaws/unload/
+    FROM ( SELECT * FROM "SNOWFLAKE_SAMPLE_DATA"."TPCDS_SF100TCL"."CUSTOMER_DEMOGRAPHICS")
+    FILE_FORMAT = (TYPE = 'CSV')
+    OVERWRITE = TRUE
+    MAX_FILE_SIZE = 10000000;
+    
+    
+copy into @personalaws/unload/
+    FROM ( select $1:continent::string from @personalaws/canada/cities.parquet
+     (FILE_FORMAT=>'PARQUETPARSER'))
+    FILE_FORMAT = (TYPE = 'PARQUET')
+    OVERWRITE = TRUE
+    MAX_FILE_SIZE = 10000000;
+
+
+select $1:continent::string from @personalaws/canada/cities.parquet
+     (FILE_FORMAT=>'PARQUETPARSER');
+    
+INSERT INTO "DA_POC"."PUBLIC"."CITIESF"
+SELECT * FROM "DA_POC"."PUBLIC"."CITIESF" WHERE CITY IS NULL;
+
+    
+show global accounts;
+
+select current_region;
+
+show streams;
+describe stream mystream;
+show tasks;
+
+SELECT * FROM mystream
+    WHERE METADATA$ACTION = 'INSERT'
